@@ -20,6 +20,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   VideoData videoData = VideoData();
   DownloadStatus downloadStatus = DownloadStatus.ready;
 
+  double _dialogeWindowWidth = 0;
+  String _downloadDirectory = '';
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -77,10 +80,67 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
+    final double _helpHeight = 40;
+
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Container(
+        width: _width,
+        height: _helpHeight,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 30.0,
+              child: AnimatedContainer(
+                duration: Duration(seconds: 1),
+                curve: Curves.fastOutSlowIn,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                  color: Colors.grey[700],
+                ),
+                width: _dialogeWindowWidth,
+                height: _helpHeight,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 30, right: 5),
+                  child: Center(
+                    child: Text(
+                      _downloadDirectory,
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                if (_downloadDirectory == '') {
+                  _downloadDirectory = await youtubeHandler.getSaveLocation();
+                }
+                setState(() {
+                  if (_dialogeWindowWidth == 0)
+                    _dialogeWindowWidth = _width - 75;
+                  else
+                    _dialogeWindowWidth = 0;
+                });
+              },
+              child: Text(
+                "?",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Container(
         margin: const EdgeInsets.only(
-          top: 40,
+          top: 30,
           left: 36,
           right: 36,
           bottom: 20,

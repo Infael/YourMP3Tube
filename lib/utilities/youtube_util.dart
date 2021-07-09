@@ -57,6 +57,11 @@ class YoutubeUtil {
       return "No video loaded";
   }
 
+  Future<String> getSaveLocation() async {
+    var downloadsDirectory = await getExternalStorageDirectory();
+    return downloadsDirectory.toString();
+  }
+
   Future<bool> downloadMP3() async {
     try {
       // Get the video manifest and audio streams
