@@ -91,15 +91,28 @@ class YoutubeUtil {
       await fileStream.flush();
       await fileStream.close();
 
-      // Convert webm format to mp3
+      // Convert webm or mp4 format to mp3
       print("starting convertion");
-      var arguments = ["-i", filePath, filePath.replaceAll('.webm', '.mp3')];
+      var arguments = [];
+      if (filePath.endsWith('.mp4')) {
+        arguments = ["-i", filePath, filePath.replaceAll('.mp4', '.mp3')];
+      } else if (filePath.endsWith('.webm')) {
+        arguments = ["-i", filePath, filePath.replaceAll('.webm', '.mp3')];
+      } else if (filePath.endsWith('.mp3')) {
+        print('Already .mp3');
+        return true;
+      } else {
+        print('Unknown format to convert.');
+        return false;
+      }
       await _flutterFFmpeg
           .executeWithArguments(arguments)
           .then((rc) => print("FFmpeg process exited with rc $rc"));
 
       //delete webm format
-      file.delete();
+      if (filePath.endsWith('.webm') || filePath.endsWith('.mp4')) {
+        file.delete();
+      }
 
       print("Everything is fine!");
       return true;

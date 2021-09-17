@@ -37,11 +37,6 @@ class _TextInputState extends State<TextInput> {
                 ),
               ),
             ),
-            onChanged: (String str) {
-              setState(() {
-                inputController.text = str;
-              });
-            },
             onSubmitted: (input) {
               widget.onTap(input);
             },

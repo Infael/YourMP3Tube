@@ -84,6 +84,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final double _helpHeight = 40;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Container(
         width: _width,
@@ -154,7 +155,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 width: 300,
                 height: 232,
                 decoration: BoxDecoration(
-                  // border: Border.all(),
                   borderRadius: BorderRadius.circular(30.0),
                   image: youtubeHandler.videoLoaded
                       ? DecorationImage(image: NetworkImage(videoData.url))
@@ -208,7 +208,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 visible: youtubeHandler.videoLoaded ? true : false,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (downloadStatus != DownloadStatus.downloading) {
+                    if (downloadStatus != DownloadStatus.downloading &&
+                        downloadStatus != DownloadStatus.success) {
                       await Permission.storage.request();
                       startDownloading();
                       final bool success = await youtubeHandler.downloadMP3();

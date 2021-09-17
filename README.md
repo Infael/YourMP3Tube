@@ -17,6 +17,14 @@ flutter pub get
 flutter run
 ```
 
+## Create apk and install
+--no-shrink in first command is important, without it [flutter_ffmpeg](https://pub.dev/packages/flutter_ffmpeg) doesn't work
+```shell
+flutter build apk --split-per-abi --no-shrink
+flutter install
+flutter clean
+```
+
 ## Created & Maintained By
 
 [Michal Štefaňák](https://github.com/Infael)
